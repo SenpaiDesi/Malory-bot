@@ -1,0 +1,6 @@
+not_registered = "Error! Either this user is not registered or was not found."
+no_data_found = "Either the data does not exist or could not find it."
+no_in_game_name_given = "You forgot to provide your In Game Name!"
+no_region_given = "You forgot to provide an region!"
+no_attachment_given = "You forgot to add an attachment with your account screenshot!"
+duplicate_bot_dev_entry = "This user is already added as a bot admin!"
