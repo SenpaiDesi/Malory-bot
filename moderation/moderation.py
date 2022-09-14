@@ -1,4 +1,5 @@
 import asyncio
+from http.client import HTTPException
 import re
 import sqlite3
 import time
@@ -286,6 +287,36 @@ class moderation(commands.Cog):
             await asyncio.sleep(2)
             await database.close()
             await ctx.send(f"✅Deleted {caseno}")
+    
+    @commands.command(name='sendmessage')
+    @commands.has_permissions(ban_members=True)
+    async def sendcustommessage(self, ctx, channel : discord.TextChannel, title, *, message):
+        """Send a custom message to a channel. Format:  sendmessage #channel TitelHere(No spaces) Message here"""
+        embed = discord.Embed(name=f'{ctx.author.display_name}', color = discord.Color.blurple())
+        embed.add_field(name=title, value=message)
+        embed.set_author(name=ctx.author.display_name)
+        try:
+            await channel.send(embed = embed)
+            return await ctx.reply(f"Sent message in {channel.mention}", mention_author=True)
+        except discord.errors.Forbidden:
+            return await ctx.reply("Sorry I can not send this message since you do not have the correct permissions. (You need ban permissions) ")
+        
+        except HTTPException:
+            return await channel.send(f"**{title}**\n\n{message}\n\n\n||Sent by {ctx.author.display_name}||")
+    
+    @commands.command(name='reportbug')
+    @commands.has_permissions(ban_members=True)
+    async def sendbugreport(self, ctx, title, *, message):
+        """Send a bug report to devs. Format: reportbug Bugtitle Bugdescription. By doing so you agree on the bot sending you a dm about the status."""
+        embed = discord.Embed(name=f'{ctx.author.display_name}', color = discord.Color.blurple())
+        embed.add_field(name=f"Bug report: {title}", value=message)
+        embed.set_footer(text=f"{ctx.author.display_name} ({ctx.author.id})")
+        dev = self.bot.get_user(521028748829786134)
+        try:
+            await dev.send(embed=embed)
+        except HTTPException:
+            await dev.send(f"Bug report - {ctx.author.name}({ctx.author.id}\n\nTitle:{title}\n\nMessage: {message}")
+        await ctx.reply("Report sent!", mention_author=True)
 
 
 def setup(bot):
