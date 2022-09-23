@@ -319,5 +319,22 @@ class moderation(commands.Cog):
         await ctx.reply("Report sent!", mention_author=True)
 
 
+    @commands.command(name="rules")
+    @commands.has_permissions(ban_members=True)
+    async def rules(self, ctx):
+        await ctx.channel.purge(limit=1)
+        embed = discord.Embed(name="Rules", color = discord.Color.random())
+        embed.set_thumbnail(url=ctx.guild.icon_url)
+        embed.add_field(name="1. Be respectful", value="This means no mean, rude, or harassing comments. Treat others the way you want to be treated.", inline=False)
+        embed.add_field(name="2. No inappropriate language", value="Use of profanity should be kept to a reasonable minimum. Any derogatory language towards any user is prohibited. Swearing is permitted in casual channels only, while the official help and code channels should be kept free of any profane language.", inline=False)
+        embed.add_field(name="3. No spamming", value="Do not send a lot of small messages right after each other. These disrupt chat and make it hard to scroll through the server. Please keep your messages at least 5 words long while chatting.", inline=False)
+        embed.add_field(name="4. No pornographic/adult/other NSFW material", value="The idea behind the server is to provide a safe place for us to share art, videos, and other kinds of creative material - not to share the aforementioned NSFW material.", inline=False)
+        embed.add_field(name="5. No advertisements", value="No invasive advertising, whether it be for other communities or streams. You can post your content in the media channel if it's relevant and provides actual value for the community.", inline=False)
+        embed.add_field(name="6. No offensive names and profile pictures", value="Keep your names and profile picture appropriate.",inline=False)
+        embed.add_field(name="7. Server Raiding", value="Server raiding is against the Discord terms of service. Any attempt to circumvent or bypass them can result in a permanent ban.", inline=False)
+        embed.add_field(name="8. Threats are forbidden", value="Threats are prohibited and disallowed.", inline=False)
+        embed.add_field(name="9. Use channels the way they're meant to be used.", value="Only speak the language that the channel is made for. No other languages permitted.", inline=False)
+        embed.add_field(name="Last but not least.", value="**The Admins and Moderators will Mute/Kick/Ban per discretion. If you feel mistreated DM an Admin and we will resolve the issue.**\n\nAll Channels will have pinned messages explaining what they are there for and how everything works. If you don't understand something, feel free to ask!", inline=False)
+        await ctx.send(embed=embed)
 def setup(bot):
     bot.add_cog(moderation(bot))
