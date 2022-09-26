@@ -21,16 +21,17 @@ class events(commands.Cog):
         logchannel = await self.bot.get_channel(1015733829761241168)
         welcomechannel = await self.bot.get_channel()
         log_embed = discord.Embed(name='Welcome', color = discord.Color.green())
-        
-        ##  Try sending an userlog embed
-        log_embed.add_field(name='Member joined', value=f"{member.name}#{member.discriminator}")
-        log_embed.set_author(url = member.avatar_url)
-        log_embed.set_footer(text=f"Author ID: {member.id}")
-        try:
-            await logchannel.send(embed=log_embed)
-        except HTTPException:
-            return await logchannel.send(f"**Member joined**\n\nMember: {member.name}#{member.discriminator}\n\nMember ID: {member.id}")
-    
+        log_embed.set_thumbnail(url=member.avatar_url)
+
+        if str(len(member.guild.members)).endswith("0" or "4" or "5" or "6" or "7" or "8" or "9"):
+            log_embed.add_field(name=f"{member.name}#{member.discriminator} Joined.", value=f"You are the {len(member.guild.members)}th member")
+            log_embed.set_footer(member.id)
+        elif str(len(member.guild.members)).endswith("1"):
+            log_embed.add_field(name=f"{member.name}#{member.discriminator} Joined.", value=f"You are the {len(member.guild.members)}st member")
+            log_embed.set_footer(member.id)
+        elif str(len(member.guild.members)).endswith("2"):
+            log_embed.add_field(name=f"{member.name}#{member.discriminator} Joined.", value=f"You are the {len(member.guild.members)}nd member")
+            log_embed.set_footer(member.id)
     @commands.Cog.listener()
     async def on_member_leave(self, member):
         """Event to log member leaves"""
