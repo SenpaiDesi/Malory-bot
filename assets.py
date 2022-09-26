@@ -6,6 +6,13 @@ statuses = ["https://youtube.com/channel/UCVUAQQwGVhpTKzg5ivlR58A",
             "Watching funny content",
             "Watching you!",
             "Guarding our servers"]
+
+
+
+
+
 extensions = ["admins.admins",
               "help.help",
-              "moderation.moderation"]
+              "moderation.moderation",
+              "events.events",
+              "whois.whois"]

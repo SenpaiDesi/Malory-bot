@@ -8,7 +8,7 @@ import sqlite3
 import uttilities
 main_config = ""
 guilds = ""
-bot_version = "0.0.1"
+bot_version = "0.0.2-DEV"
 
 # json keys
 key_config_token = "token"
@@ -59,6 +59,7 @@ def is_bot_admin():
 
 
 def is_bot_developer(member_id):
+    """Check wether or not the given member id is a Bot Developer."""
     database = sqlite3.connect(assets.Database_file)
     try:
         listdevs = database.execute(f"SELECT * FROM botdevs WHERE userid = {member_id}")
@@ -74,6 +75,7 @@ def is_bot_developer(member_id):
         
 
 async def get_prefix(_bot, message):
+    """Get the prefix for a server. Used for every command as defined in bot.py under command_prefix="""
     for guild in _bot.guilds:
         db = await aiosqlite.connect("database.db")
         try:
@@ -107,6 +109,7 @@ def create_simple_embed(title, color, field_title, field_content):
 
 
 async def on_guild_join(guild):
+    """Add a server to the guilds database and set the default prefix to mal- """
     database = await aiosqlite.connect("./database.db")
     try:
         await database.execute("INSERT OR IGNORE INTO guilds VALUES (?, ?)", (guild.id, "mal-"))

@@ -1,4 +1,8 @@
+from dis import disco
+import http
+from http.client import HTTPException
 from sqlite3 import IntegrityError
+from unicodedata import name
 import uttilities as utilities
 from discord.ext import commands
 from errors import DatabaseError
@@ -91,6 +95,8 @@ class admins(commands.Cog):
             await database.commit()
             await database.execute("CREATE TABLE IF NOT EXISTS botdevs (userid INTEGER PRIMARY KEY, name TEXT)")
             await database.commit()
+            await database.execute("CREATE TABLE IF NOT EXISTS commandlogs (userID INTEGER, command TEXT)")
+            await database.commit()
             await message.edit(content = process.format("2"))
         except Exception as e:
             return await ctx.send(f"Could not complete task 1 because of \n{e}")
@@ -140,5 +146,21 @@ class admins(commands.Cog):
                 await database.close()
             except ValueError:
                 pass
+    
+    @commands.command(name='senddm')
+    @utilities.is_bot_admin()
+    async def senddm(self, ctx, userid, title, *, message):
+        member = await self.bot.fetch_user(userid)
+        embed = discord.Embed(name="Bug report status", color = discord.Color.orange())
+        embed.add_field(name=f"BUG-REPORT-STATUS {title}", value=f"{message}")
+        embed.set_footer(text="Sent by Senpai_Desi#4108")
+        try:
+            await member.send(embed=embed)
+            return await ctx.send("Message sent")
+        except HTTPException:
+            await member.send(f"Bug report status.\n\n{title}\n\n{message}\n\n**Sent by Senpai_Desi**")
+            return await ctx.send("Message sent (no embed)")
+        except discord.errors.Forbidden:
+            return await ctx.send("User blocked dms.")
 def setup(bot):
     bot.add_cog(admins(bot))
