@@ -25,7 +25,7 @@ class events(commands.Cog):
 
         if str(len(member.guild.members)).endswith("0" or "4" or "5" or "6" or "7" or "8" or "9"):
             log_embed.add_field(name=f"{member.name}#{member.discriminator} Joined.", value=f"You are the {len(member.guild.members)}th member")
-            log_embed.set_footer(member.id)
+            log_embed.set_footer(text=f"{member.id}")
         elif str(len(member.guild.members)).endswith("1"):
             log_embed.add_field(name=f"{member.name}#{member.discriminator} Joined.", value=f"You are the {len(member.guild.members)}st member")
             log_embed.set_footer(member.id)
